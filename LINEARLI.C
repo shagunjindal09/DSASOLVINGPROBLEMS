@@ -1,198 +1,136 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<conio.h>
-typedef struct nodetype{
-int info;
-struct nodetype *next;
+
+typedef struct node{
+    int info;
+    struct node *next;
 }node;
-void createEmptyList(node **head);
-void traverseInOrder(node *head);
-void traverseInReverseOrder(node *head);
-void InsertAtBeginning(node **head,int item);
-void InsertAtEnd(node **head,int item);
-void deleteFromBeginning(node **head);
-void insertAfterElement(node *head,int item,int after);
-node *search(node *head,int item);
-void deleteFromEnd(node **head);
-void deleteAfterElement(node *head,int after);
+int main()
+{
+    int ch;
+    node *head=NULL,*ptr,*temp,*prevnode,*currnode,*nextnode;
+    int data;
+    while(1){
+        printf("Menu\n");
+        printf("1. insert at beg\n2. Traversing\n 3. insert at end\n 4. searching\n5.insert after element\n6.Delete from beginning\n7.reverselinkedlist\n8.exit");
+        printf("\nenter choice:");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1:
+            printf("enter the element you want to insert");
+            scanf("%d",&data);
+            temp=(node *)malloc (sizeof(node));
+            temp->info=data;
+            if(head!=NULL){
+                temp->next=head;
+            }
+            else{
+                temp->next=NULL;
+            }
+            head=temp;
+            printf("successfully insertred");
+            break;
+            case 2:
+            temp=head;
+        while(temp!=NULL){
+            printf("%d\n",temp->info);
+            temp=temp->next;
+        }
+        break;
 
-void main(){
-node *head;
-int choice,element,after,pri;
-clrscr();
-createEmptyList(&head);
-while(1){
-printf("operations available are\n");
-printf("1.Insert at beginnning\n");
-printf("2.traverse in order\n");
-printf("3.delete from beginning\n");
-printf("4.serach element\n");
-printf("5.insertAtEnd\n");
-printf("6.traverseinReverseOrder\n");
-printf("7.insertafter element\n");
-printf("8.delete from end\n");
-printf("9.delete after element\n");
-printf("10.for exit\n");
-printf("enter choice 1 or 2 or 3 or 4 or 5 or 6 0r 7or 8 or 9\n");
-scanf("%d",&choice);
-switch(choice){
-case 1:
-printf("\n enter element");
-scanf("%d",&element);
-InsertAtBeginning(&head,element);
-break;
-case 2:
-if(head==NULL)
-printf("\nList is empty");
-else
-traverseInOrder(head);
-break;
-//printf("press any key to continue");
-case 3:
-printf("for delete the element from beginning\n");
-deleteFromBeginning(&head);
-break;
-case 4:
-printf("search for element");
-pri=search(head,element);
-printf("%d",pri);
-break;
+        case 3:
+        temp=head;
+        printf("enter data you want to insert");
+        scanf("%d",&data);
+        ptr=(node *)malloc (sizeof(node));
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=ptr;
+        ptr->next=NULL;
+        break;
 
-case 5:
-printf("enter element");
-scanf("%d",&element);
-InsertAtEnd(&head,element);
-break;
-case 6:
-if(head==NULL)
-printf("\nList is empty");
-else
-traverseInReverseOrder(head);
-printf("\nenter any key to continue");
-break;
+        case 4:
+        temp=head;
+        printf("enter the data you want to search");
+        scanf("%d",&data);
+        if(temp==NULL){
+            printf("no data found\n");
+
+        }
+        while(temp!=NULL){
+            if(data==temp->info){
+                printf("data found\n");
+                break;
+            }
+            else{
+                temp=temp->next;
+            }
+        }
+    break;
+    case 5:
+   printf("enter the data you want to insert\n");
+   scanf("%d",&data);
+   ptr=head;
+   if(ptr==NULL){
+       printf("No data found");
+       break;
+   }
+   while(ptr!=NULL){
+       if(data==ptr->info){
+           break;
+       }
+       ptr=ptr->next;
+   }
+   if(ptr==NULL){
+       printf("no element found");
+   }
+   else{
+       printf("enter the data");
+       scanf("%d",&data);
+       temp=(node*) malloc(sizeof(node));
+       temp->info=data;
+       temp->next=ptr->next;
+       ptr->next=temp;
+       printf("insert node successfully\n");
+   }
+    break;
+
+    case 6:
+     temp=head;
+     if(temp==NULL){
+         return;
+     } 
+     else{
+ptr=head;
+head=head->next;
+free(ptr);
+     }    
+     break; 
 
 case 7:
-printf("enter element you want to insert\n");
-scanf("%d",&element);
-printf("after which element\n");
-
- insertAfterElement(head,element,after);
-		   break;
-case 8:
-deleteFromEnd(&head);
-break;
-case 9:
-printf("enter the element you want to delete\n");
-scanf("%d",&element);
-printf("after which you want to delete\n");
-deleteAfterElement(head,after);
-break;
-
-
-
-case 10: exit(1);
-break;
-getch();
-break;
+prevnode=0;
+currnode=nextnode=head;
+while(nextnode!=NULL){
+    nextnode=nextnode->next;
+    currnode->next=prevnode;
+    prevnode=currnode;
+    currnode=nextnode;
 }
-}
-}
-void createEmptyList(node **head){
-*head =NULL;
-}
- void InsertAtBeginning(node **head,int item){
- node *ptr;
- ptr=(node*)malloc(sizeof(node));
- ptr->info=item;
- if(*head==NULL)
- ptr->next=NULL;
- else
- ptr->next=*head;
- *head=ptr;
- }
- void traverseInOrder(node *head){
- while(head!=NULL){
- printf("\n%d",head->info);
- head=head->next;
- }
- }
- void deleteFromBeginning(node **head){
- node *ptr;
- if(*head==NULL){
- return;
- }
- else
- {
- ptr=*head;
- *head= ptr->next;
- free(ptr);
- }
- }
- node *search(node *head,int item){
- scanf("%d",&item);
- while((head!=NULL) && (head->info!=item))
- head=head->next;
- return head;
- }
- void InsertAtEnd(node **head,int item){
- node *ptr,*loc;
- ptr=(node*)malloc(sizeof(node));
- ptr->info=item;
- ptr->next=NULL;
- if(*head==NULL)
- *head=ptr;
- else{
- loc=*head;
- while(loc->next!=NULL)
- loc=loc->next;
- loc->next=ptr;
- }
- }
- void traverseInReverseOrder(node *head){
- if(head->next!=NULL)
- {
- traverseInReverseOrder(head->next);
- }
- printf("\n %d",head->info);
- }
- void insertAfterElement(node *head,int item,int after){
- node *ptr,*loc;
- loc=search(head,after);
- if(loc==(node*)NULL)
- return;
- ptr=(node*)malloc (sizeof(node));
- ptr->info=item;
- ptr->next=loc->next;
- loc->next=ptr;
- }
- void deleteFromEnd(node **head){
- node *ptr,*loc;
- if(*head==NULL)
- return;
- else if((*head)->next==NULL)
- {
- ptr=*head;
- *head=NULL;
- free(ptr);
- }
- else
- loc=*head;
- ptr=(*head)->next;
- while(ptr->next!=NULL){
- loc=ptr;
- ptr=ptr->next;
- }
- loc->next=NULL;
- free(ptr);
- }
+head=prevnode;
 
- void deleteAfterElement(node *head,int after){
- node *ptr,*loc;
- loc=search(head,after);
- if(loc==(node*)NULL)
- return;
+  break; 
 
- ptr=loc->next;
- loc->next=ptr->next;
- free(ptr);
- }
+
+    case 8:exit(1);
+          break;
+
+     
+     default:
+    printf("you entered the wrong");
+    }
+
+        }
+    
+    return 0;
+}
